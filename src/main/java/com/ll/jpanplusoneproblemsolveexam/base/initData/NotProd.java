@@ -18,26 +18,27 @@ public class NotProd {
 	CommandLineRunner initData(CategoryRepository categoryRepository, ProductRepository productRepository) {
 		return args -> {
 			List<Category> categoryList = new ArrayList<>();
-			for(int i = 0; i < 3; i++) {
+			for (int i = 0; i < 3; i++) {
 				categoryList.add(Category
 					.builder()
-					.name("테스트 카테고리" + i)
+					.name("테스트 카테고리 " + i)
 					.build());
 			}
-			// 밑에서 category 사용하려면 id 필요해서 이부분 생략해도 동작하나 명시적 호출
+
 			categoryRepository.saveAll(categoryList);
+
 			List<Product> productList = new ArrayList<>();
-			for(int i = 0; i < 15; i++) {
-				Category category = switch (i % 5) {
-					case 0 -> categoryList.get(0);
-					case 1 -> categoryList.get(1);
-					default -> categoryList.get(2);
+			for (int i = 0; i < 15; i++) {
+				Category category = switch (i / 5) {
+					case 0 -> categoryList.get(0); // 0~4
+					case 1 -> categoryList.get(1); // 5~9
+					default -> categoryList.get(2); // 10~14
 				};
 				productList.add(Product.builder()
-						.name("테스트상품명 " + i)
-						.price(1000)
-						.category(category)
-						.build());
+					.name("테스트상품명 " + i)
+					.price(1000)
+					.category(category)
+					.build());
 			}
 
 			productRepository.saveAll(productList);
