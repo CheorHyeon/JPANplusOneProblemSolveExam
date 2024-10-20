@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.category.dto.ResponseCategoryDto;
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.category.service.CategoryService;
+import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.dto.ProductInfo;
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.dto.ResponseProductDto;
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.service.ProductService;
 
@@ -91,5 +92,13 @@ class JpaNplusOneProblemSolveExamApplicationTests {
 	void N_Plus_One_쿼리_해결_CaseFour(){
 		Page<ResponseCategoryDto> responseCategoryDtos = categoryService.N_Plus_One_쿼리_해결CaseFour_BatchSizeAnnotationWithPageInOneToMany();
 		assertThat(responseCategoryDtos.getContent().size()).isEqualTo(2);
+	}
+
+	@Test
+	@DisplayName("N+1 쿼리 해결 case 5 - 특정 컬럼을 select 메서드에 명시하여 DTO 객체로 받아 "
+		+ "Proxy 객체를 사용하지 않도록 하여 N+1 문제 회피")
+	void N_Plus_One_쿼리_해결_CaseFive(){
+		Page<ProductInfo> productInfos = productService.N_Plus_One_쿼리_해결CaseFive_findDtoBySpecificColumns();
+		assertThat(productInfos.getContent().size()).isEqualTo(2);
 	}
 }

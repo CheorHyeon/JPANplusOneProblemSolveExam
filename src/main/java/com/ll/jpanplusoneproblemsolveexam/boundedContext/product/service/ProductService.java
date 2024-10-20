@@ -8,6 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ll.jpanplusoneproblemsolveexam.boundedContext.category.entity.Category;
+import com.ll.jpanplusoneproblemsolveexam.boundedContext.category.repository.CategoryRepository;
+import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.dto.ProductInfo;
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.dto.ResponseProductDto;
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.repository.ProductQuerydslRepository;
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.repository.ProductRepository;
@@ -20,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
 	private final ProductQuerydslRepository productQuerydslRepository;
 	private final ProductRepository productRepository;
+	private final CategoryRepository categoryRepository;
 
 	public List<ResponseProductDto> NPlusOne문제발생Querydsl(){
 		return productQuerydslRepository.findAllProductsQuerydsl()
@@ -53,5 +57,11 @@ public class ProductService {
 		PageRequest pageRequest = PageRequest.of(1, 2);
 		return productQuerydslRepository.findPageProductsQuerydslWithFetchJoin(pageRequest)
 			.map(ResponseProductDto::getAllProductList);
+	}
+
+	public Page<ProductInfo> N_Plus_One_쿼리_해결CaseFive_findDtoBySpecificColumns(){
+		Category category = categoryRepository.findById(1L).orElse(null);
+		PageRequest pageRequest = PageRequest.of(1, 2);
+		return productQuerydslRepository.findProductsByCategory(category, pageRequest);
 	}
 }

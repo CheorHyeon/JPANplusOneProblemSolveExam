@@ -10,7 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
+import com.ll.jpanplusoneproblemsolveexam.boundedContext.category.entity.Category;
+import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.dto.ProductInfo;
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.entity.Product;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -56,5 +59,22 @@ public class ProductQuerydslRepository {
 			.from(product);
 
 		return PageableExecutionUtils.getPage(products, pageable, total::fetchOne);
+	}
+
+	public Page<ProductInfo> findProductsByCategory(Category category, Pageable pageable) {
+		List<ProductInfo> list = queryFactory
+			.select(Projections.constructor(ProductInfo.class,
+				product.id, product.name, product.price))
+			.from(product)
+			.where(product.category.eq(category))
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
+			.fetch();
+
+		JPAQuery<Long> total = queryFactory.select(product.count())
+			.from(product)
+			.where(product.category.eq(category));
+
+		return PageableExecutionUtils.getPage(list, pageable, total::fetchOne);
 	}
 }
