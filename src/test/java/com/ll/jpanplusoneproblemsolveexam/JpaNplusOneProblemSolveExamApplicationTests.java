@@ -101,4 +101,12 @@ class JpaNplusOneProblemSolveExamApplicationTests {
 		Page<ProductInfo> productInfos = productService.N_Plus_One_쿼리_해결CaseFive_findDtoBySpecificColumns();
 		assertThat(productInfos.getContent().size()).isEqualTo(2);
 	}
+
+	@Test
+	@DisplayName("N+1 쿼리 해결 case 6 - 특정 컬럼을 select 메서드에 명시하여 Tuple로 받아 "
+		+ "Proxy 객체를 사용하지 않도록 하여 N+1 문제 회피")
+	void N_Plus_One_쿼리_해결_CaseSix(){
+		Page<ProductInfo> productInfos = productService.N_Plus_One_쿼리_해결CaseSix_findTupleBySpecificColumns();
+		assertThat(productInfos.getContent().size()).isEqualTo(2);
+	}
 }

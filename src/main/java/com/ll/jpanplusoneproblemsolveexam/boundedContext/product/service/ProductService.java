@@ -64,4 +64,10 @@ public class ProductService {
 		PageRequest pageRequest = PageRequest.of(1, 2);
 		return productQuerydslRepository.findProductsByCategory(category, pageRequest);
 	}
+
+	public Page<ProductInfo> N_Plus_One_쿼리_해결CaseSix_findTupleBySpecificColumns(){
+		Category category = categoryRepository.findById(1L).orElse(null);
+		PageRequest pageRequest = PageRequest.of(1, 2);
+		return productQuerydslRepository.findProductsByCategoryWithTuple(category, pageRequest);
+	}
 }

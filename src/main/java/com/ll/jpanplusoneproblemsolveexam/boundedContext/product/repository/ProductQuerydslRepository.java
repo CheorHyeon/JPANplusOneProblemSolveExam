@@ -4,8 +4,10 @@ import static com.ll.jpanplusoneproblemsolveexam.boundedContext.category.entity.
 import static com.ll.jpanplusoneproblemsolveexam.boundedContext.product.entity.QProduct.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.category.entity.Category;
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.dto.ProductInfo;
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.entity.Product;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -74,6 +77,31 @@ public class ProductQuerydslRepository {
 		JPAQuery<Long> total = queryFactory.select(product.count())
 			.from(product)
 			.where(product.category.eq(category));
+
+		return PageableExecutionUtils.getPage(list, pageable, total::fetchOne);
+	}
+
+	public Page<ProductInfo> findProductsByCategoryWithTuple(Category category, PageRequest pageable) {
+		List<Tuple> tuples = queryFactory
+			.select(product.id, product.name, product.price)
+			.from(product)
+			.where(product.category.eq(category))
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
+			.fetch();
+
+		JPAQuery<Long> total = queryFactory.select(product.count())
+			.from(product)
+			.where(product.category.eq(category));
+
+		// tuple -> DTO List
+		List<ProductInfo> list = tuples.stream()
+			.map(tuple -> new ProductInfo(
+				tuple.get(product.id),
+				tuple.get(product.name),
+				tuple.get(product.price)
+			))
+			.collect(Collectors.toList());
 
 		return PageableExecutionUtils.getPage(list, pageable, total::fetchOne);
 	}
