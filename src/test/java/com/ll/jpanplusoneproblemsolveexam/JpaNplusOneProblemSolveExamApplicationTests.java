@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.category.service.CategoryService;
@@ -54,6 +55,13 @@ class JpaNplusOneProblemSolveExamApplicationTests {
 	void N_Plus_One_쿼리_해결_CaseOne() {
 		List<ResponseProductDto> productDtoList = productService.N_Plus_One_쿼리_해결CaseOne_FetchJoinInManyToOne();
 		assertThat(productDtoList.size()).isEqualTo(15);
+	}
+
+	@Test
+	@DisplayName("N+1 쿼리 해결 case 2 - FetchJoin과 Pageable을 ManyToOne에서 사용해도 Offset과 Limit이 쿼리로 잘 적용 된다.")
+	void N_Plus_One_쿼리_해결_CaseTwo() {
+		Page<ResponseProductDto> productDtoList = productService.N_Plus_One_쿼리_해결CaseTwo_FetchJoinWithPageInManyToOne();
+		assertThat(productDtoList.getContent().size()).isEqualTo(2);
 	}
 
 }

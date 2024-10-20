@@ -3,6 +3,8 @@ package com.ll.jpanplusoneproblemsolveexam.boundedContext.product.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,5 +47,11 @@ public class ProductService {
 			.stream()
 			.map(ResponseProductDto::getAllProductList)
 			.collect(Collectors.toList());
+	}
+
+	public Page<ResponseProductDto> N_Plus_One_쿼리_해결CaseTwo_FetchJoinWithPageInManyToOne(){
+		PageRequest pageRequest = PageRequest.of(1, 2);
+		return productQuerydslRepository.findPageProductsQuerydslWithFetchJoin(pageRequest)
+			.map(ResponseProductDto::getAllProductList);
 	}
 }
