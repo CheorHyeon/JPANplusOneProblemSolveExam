@@ -21,4 +21,10 @@ public class CategoryService {
 		return categoryQuerydslRepository.findCategoriesWithProductsFetchJoinPaging("테스트 카테고리", pageRequest)
 			.map(ResponseCategoryDto::getAllCategoryList);
 	}
+
+	public Page<ResponseCategoryDto> N_Plus_One_쿼리_해결CaseFour_BatchSizeAnnotationWithPageInOneToMany(){
+		PageRequest pageRequest = PageRequest.of(0, 2);
+		return categoryQuerydslRepository.findCategoriesWithProductsBatchSizeAnnotationPaging("테스트 카테고리", pageRequest)
+			.map(ResponseCategoryDto::getAllCategoryList);
+	}
 }

@@ -84,4 +84,12 @@ class JpaNplusOneProblemSolveExamApplicationTests {
 		// JSON 결과 출력
 		System.out.println(jsonResult);
 	}
+
+	@Test
+	@DisplayName("N+1 쿼리 해결 case 4 - OneToMany 관계에서 프록시 객체를 사용할 때 @BatchSize를 이용하여"
+		+ "여러 select 쿼리들을 지정된 갯수만큼 In Query로 모아 N+1 문제를 해결한다.")
+	void N_Plus_One_쿼리_해결_CaseFour(){
+		Page<ResponseCategoryDto> responseCategoryDtos = categoryService.N_Plus_One_쿼리_해결CaseFour_BatchSizeAnnotationWithPageInOneToMany();
+		assertThat(responseCategoryDtos.getContent().size()).isEqualTo(2);
+	}
 }

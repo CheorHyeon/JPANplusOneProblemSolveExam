@@ -36,4 +36,20 @@ public class CategoryQuerydslRepository {
 		// 실제로는 메모리 내에서 페이징이 적용됨
 		return PageableExecutionUtils.getPage(results, pageable, total::fetchOne);
 	}
+
+	public Page<Category> findCategoriesWithProductsBatchSizeAnnotationPaging(String categoryName, Pageable pageable) {
+		// Product 없이 Category만 반환 -> DTO 변환 시 Entity 사용하기에 N+1 발생하나
+		// @BatchSize로 인해 1개의 추가 쿼리만 발생 select product.* where categoryId in (...)
+		List<Category> results = queryFactory.selectFrom(category)
+			.where(category.name.contains(categoryName))
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
+			.fetch();
+
+		JPAQuery<Long> total = queryFactory.select(category.count())
+			.from(category)
+			.where(category.name.contains(categoryName));
+
+		return PageableExecutionUtils.getPage(results, pageable, total::fetchOne);
+	}
 }

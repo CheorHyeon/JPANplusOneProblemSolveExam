@@ -5,6 +5,8 @@ import static jakarta.persistence.GenerationType.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.BatchSize;
+
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.entity.Product;
 
 import jakarta.persistence.Entity;
@@ -30,5 +32,6 @@ public class Category {
 
 	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
 	@Builder.Default
+	@BatchSize(size = 10)
 	List<Product> products = new ArrayList<>();
 }
