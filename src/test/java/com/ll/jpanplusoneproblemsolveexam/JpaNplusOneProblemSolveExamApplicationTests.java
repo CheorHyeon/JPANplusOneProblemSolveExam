@@ -109,4 +109,11 @@ class JpaNplusOneProblemSolveExamApplicationTests {
 		Page<ProductInfo> productInfos = productService.N_Plus_One_쿼리_해결CaseSix_findTupleBySpecificColumns();
 		assertThat(productInfos.getContent().size()).isEqualTo(2);
 	}
+
+	@Test
+	@DisplayName("N+1 쿼리 발생하는지 확인용2 - Querydsl DTO 이용")
+	void N_Plus_One_쿼리_발생_Querydsl_Dto이용() {
+		List<ResponseProductDto> productDtoList = productService.N_Plus_One문제발생QuerydslDto이용();
+		assertThat(productDtoList.size()).isEqualTo(15);
+	}
 }

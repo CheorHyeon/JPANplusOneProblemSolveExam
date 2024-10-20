@@ -70,4 +70,8 @@ public class ProductService {
 		PageRequest pageRequest = PageRequest.of(1, 2);
 		return productQuerydslRepository.findProductsByCategoryWithTuple(category, pageRequest);
 	}
+
+	public List<ResponseProductDto> N_Plus_One문제발생QuerydslDto이용(){
+		return productQuerydslRepository.findResponseProductsQuerydsl();
+	}
 }

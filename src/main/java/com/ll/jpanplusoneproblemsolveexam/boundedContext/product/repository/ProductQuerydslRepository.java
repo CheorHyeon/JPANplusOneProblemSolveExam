@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.category.entity.Category;
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.dto.ProductInfo;
+import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.dto.ResponseProductDto;
 import com.ll.jpanplusoneproblemsolveexam.boundedContext.product.entity.Product;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -104,5 +105,14 @@ public class ProductQuerydslRepository {
 			.collect(Collectors.toList());
 
 		return PageableExecutionUtils.getPage(list, pageable, total::fetchOne);
+	}
+
+	public List<ResponseProductDto> findResponseProductsQuerydsl() {
+		return queryFactory
+			// 생성자 내부에서 프록시 객체를 사용하기에 N+1 발생
+			.select(Projections.constructor(ResponseProductDto.class,
+				product))
+			.from(product)
+			.fetch();
 	}
 }
