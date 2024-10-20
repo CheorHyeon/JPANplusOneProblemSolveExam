@@ -40,4 +40,10 @@ public class ProductService {
 			.collect(Collectors.toList());
 	}
 
+	public List<ResponseProductDto> N_Plus_One_쿼리_해결CaseOne_FetchJoinInManyToOne(){
+		return productQuerydslRepository.findAllProductsQuerydslWithFetchJoin()
+			.stream()
+			.map(ResponseProductDto::getAllProductList)
+			.collect(Collectors.toList());
+	}
 }

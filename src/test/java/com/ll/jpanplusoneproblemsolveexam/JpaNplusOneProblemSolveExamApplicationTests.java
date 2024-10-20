@@ -49,4 +49,11 @@ class JpaNplusOneProblemSolveExamApplicationTests {
 		assertThat(productDtoList.size()).isEqualTo(15);
 	}
 
+	@Test
+	@DisplayName("N+1 쿼리 해결 case 1 - FetchJoin을 사용하면 조회 대상 엔티티 + 연관 관계 엔티티 모두 가져온다.")
+	void N_Plus_One_쿼리_해결_CaseOne() {
+		List<ResponseProductDto> productDtoList = productService.N_Plus_One_쿼리_해결CaseOne_FetchJoinInManyToOne();
+		assertThat(productDtoList.size()).isEqualTo(15);
+	}
+
 }

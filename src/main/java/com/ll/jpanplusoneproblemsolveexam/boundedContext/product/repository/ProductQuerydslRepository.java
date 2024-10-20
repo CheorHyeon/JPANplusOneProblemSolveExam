@@ -31,4 +31,11 @@ public class ProductQuerydslRepository {
 			.fetch();
 	}
 
+	public List<Product> findAllProductsQuerydslWithFetchJoin() {
+		return queryFactory
+			.select(product)
+			.from(product)
+			.join(product.category, category).fetchJoin()
+			.fetch();
+	}
 }
