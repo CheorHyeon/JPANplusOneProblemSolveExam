@@ -14,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ProductService {
 	private final ProductQuerydslRepository productQuerydslRepository;
 	private final ProductRepository productRepository;
 
-	@Transactional(readOnly = true)
 	public List<ResponseProductDto> NPlusOne문제발생Querydsl(){
 		return productQuerydslRepository.findAllProductsQuerydsl()
 			.stream()
@@ -26,11 +26,18 @@ public class ProductService {
 			.collect(Collectors.toList());
 	}
 
-	@Transactional(readOnly = true)
 	public List<ResponseProductDto> NPlusOne문제발생JPA(){
 		return productRepository.findAll()
 			.stream()
 			.map(ResponseProductDto::getAllProductList)
 			.collect(Collectors.toList());
 	}
+
+	public List<ResponseProductDto> N_Plus_One_쿼리_해결CaseZero_하지만해결실패(){
+		return productQuerydslRepository.findAllProductsQuerydslWithJoin()
+			.stream()
+			.map(ResponseProductDto::getAllProductList)
+			.collect(Collectors.toList());
+	}
+
 }

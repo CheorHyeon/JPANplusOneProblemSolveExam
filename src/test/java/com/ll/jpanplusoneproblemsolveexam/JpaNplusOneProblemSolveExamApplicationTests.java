@@ -42,4 +42,11 @@ class JpaNplusOneProblemSolveExamApplicationTests {
 		assertThat(productDtoList.size()).isEqualTo(15);
 	}
 
+	@Test
+	@DisplayName("N+1 쿼리 해결 case 0 - Join을 사용하면 Lazy여도 가져오지 않을까? 싶지만 여전히 N+1문제 발생")
+	void N_Plus_One_쿼리_해결_CaseZero() {
+		List<ResponseProductDto> productDtoList = productService.N_Plus_One_쿼리_해결CaseZero_하지만해결실패();
+		assertThat(productDtoList.size()).isEqualTo(15);
+	}
+
 }
